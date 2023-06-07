@@ -8,5 +8,5 @@ while not TinyWP.get_devices():
 device = TinyWP.get_devices()[0]
 TinyWP.init(device)
 TinyWP.set_integration_time_ms(device, 1000)
-print(TinyWP.get_spectrum(device, TinyWP.get_line_length(device)))
+print(TinyWP.get_spectrum(device))
 ```
