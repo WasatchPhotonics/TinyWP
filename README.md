@@ -10,3 +10,5 @@ TinyWP.init(device)
 TinyWP.set_integration_time_ms(device, 1000)
 print(TinyWP.get_spectrum(device))
 ```
+
+Should I implement this in ANSI C?
