@@ -92,6 +92,9 @@ def get_spectrum(device, msg_bytes=1024):
     device.ctrl_transfer(HOST_TO_DEVICE, 0xAD, 0, 0)
     return device.read(0x82, msg_bytes, READ_TIMEOUT)
 
+def get_spectrum_deferred(*vargs, **kwargs):
+    return lambda: get_spectrum(*vargs, **kwargs)
+
 def get_wavelengths(device):
     raise NotImplementedError()
 
