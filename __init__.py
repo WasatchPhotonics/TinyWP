@@ -34,7 +34,7 @@ import usb.util
 import usb.backend.libusb0 as libusb0
 
 # This is kept from Wasatch.PY for now because of platform-specific branching
-from DeviceFinderUSB import DeviceFinderUSB
+from .DeviceFinderUSB import DeviceFinderUSB
 
 from time import sleep
 
@@ -80,7 +80,7 @@ def is_ingaas(device):
 def is_micro(device):
     raise NotImplementedError()
 
-def get_line_length(device):
+def get_pixel_count(device):
     seq = device.ctrl_transfer(DEVICE_TO_HOST, 0xff, 0x03, 0, 64)
     return seq[1]<<8 + seq[0]
 
@@ -90,7 +90,11 @@ Getters
 
 def get_spectrum(device, msg_bytes=1024):
     device.ctrl_transfer(HOST_TO_DEVICE, 0xAD, 0, 0)
-    return device.read(0x82, msg_bytes, READ_TIMEOUT)
+    raw_data = device.read(0x82, msg_bytes, READ_TIMEOUT)
+
+    # Iterate across the received bytes in 'data' as two interleaved arrays.
+    # (i) starts at zero (even bytes) and (j) starts at 1 (odd bytes).
+    return [int(i | (j << 8)) for i, j in zip(raw_data[::2], raw_data[1::2])] # LSB-MSB
 
 def get_spectrum_deferred(*vargs, **kwargs):
     return lambda: get_spectrum(*vargs, **kwargs)

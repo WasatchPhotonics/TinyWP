@@ -10,7 +10,7 @@ print("Found Wasatch Device.", type(device))
 
 TinyWP.init(device)
 
-print(TinyWP.get_line_length(device))
+print(TinyWP.get_pixel_count(device))
 
 TinyWP.set_integration_time_ms(device, 1000)
 
