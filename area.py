@@ -29,23 +29,29 @@ start = time.time()
 TinyWP.set_integration_time_ms(device, 16)
 TinyWP.set_area_scan(device, 1)
 
+vertical = TinyWP.get_active_pixels_vertical(device)
+
+y = 0
+
 # @window.event
 def on_draw(*k):
-    window.clear()
+    # window.clear()
 
     # get spectrum
     spectrum = TinyWP.get_spectrum(device)
-    y, spectrum = spectrum[0], [spectrum[1]]+spectrum[1:]
-
-    print(y)
+    # _ contains the row index reported from the device, but this was unreliable when I tried it
+    _, spectrum = spectrum[0], [spectrum[1]]+spectrum[1:]
 
     # use pyglet GL to draw area scan
     glBegin(GL_POINTS)
     for x in range(200):
         for y in range(20):
-            glColor4f(200, 0, 200, 255)
+            glColor4f(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
             glVertex2f(10+x, 10+y)
     glEnd()
+
+    y += 1
+    y %= vertical
 
 pyglet.clock.schedule_interval(on_draw, 1/60.)
 pyglet.app.run()
