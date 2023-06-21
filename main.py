@@ -1,3 +1,8 @@
+"""
+Set integration time to 1000ms
+Continuously acquire spectra and display it in a window
+"""
+
 import pyglet
 
 import sys
