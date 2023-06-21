@@ -29,12 +29,6 @@ start = time.time()
 TinyWP.set_integration_time_ms(device, 16)
 TinyWP.set_area_scan(device, 1)
 
-
-print(TinyWP.get_line_length(device))
-print(TinyWP.get_spectrum(device))
-
-exit(0)
-
 # @window.event
 def on_draw(*k):
     window.clear()
@@ -52,7 +46,7 @@ def on_draw(*k):
             glColor4f(200, 0, 200, 255)
             glVertex2f(10+x, 10+y)
     glEnd()
-    
+
 pyglet.clock.schedule_interval(on_draw, 1/60.)
 pyglet.app.run()
 
