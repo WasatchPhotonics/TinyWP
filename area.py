@@ -1,3 +1,11 @@
+"""
+Enable area scan mode
+Set integration time to 1000ms
+Acquire spectrum and display it as a 2D area scan heatmap.
+
+Partial implementation.
+"""
+
 import pyglet
 from pyglet.gl import *
 
@@ -22,7 +30,7 @@ TinyWP.set_integration_time_ms(device, 16)
 TinyWP.set_area_scan(device, 1)
 
 
-print(TinyWP.get_pixel_count(device))
+print(TinyWP.get_line_length(device))
 print(TinyWP.get_spectrum(device))
 
 exit(0)
