@@ -5,7 +5,17 @@ Priorities:
 1. simple dependency situation
 2. performant arbitrary rendering
 
-Synopsis
+Out of box support matrix
+
+             Ubuntu 22   macOS 13.2.1  Windows 11
+PySide2        YES          NO
+PySide6        NO          YES
+tkinter        YES         YES
+PySimpleGUI    YES         YES
+
+*tkinter (and therefore PySimpleGUI) are pretty much guranteed to run consistently on every platform
+
+Synopsis - (Ubuntu only)
 
 test_window_Pyside2.py
 - works
