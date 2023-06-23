@@ -14,7 +14,7 @@ import TinyWP
 import sys
 import time
 
-FPS = 600
+FPS = 60
 
 print("Waiting for device...")
 while not TinyWP.get_devices():
@@ -47,7 +47,7 @@ def on_draw(*k):
     global y
 
     # capture full image each frame (set to 1 for single row)
-    rows_per_frame = vertical
+    rows_per_frame = vertical//3
 
     for i in range(rows_per_frame):
         # get spectrum
@@ -58,12 +58,14 @@ def on_draw(*k):
         # use pyglet GL to draw area scan
         glBegin(GL_POINTS)
         for x in range(len(spectrum)):
-            #hi = max(spectrum)
-            #lo = min(spectrum)
+
+            # adapting exposure
+            lo = min(spectrum)
+            hi = max(spectrum)
 
             # low exposure
-            lo = 0
-            hi = 14000
+            #lo = 0
+            #hi = 14000
 
             v = (spectrum[x]-lo)/(hi-lo)
             glColor4f(v, 0, 0, .5)
