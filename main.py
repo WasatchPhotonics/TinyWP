@@ -7,7 +7,7 @@ import pyglet
 
 import sys
 import TinyWP
-from TinyWP import WPPostProc
+import WPPostProc
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
