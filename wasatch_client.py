@@ -1,5 +1,7 @@
 """
 Used for comparison with TinyWP
+
+Using pyglet for rendering, which is fine for comparison - but will be removing this library soon, because non-trivial dependencies are not worthwhile for our minimal graphics needs.
 """
 
 import pyglet

@@ -3,7 +3,7 @@ Enable area scan mode
 Set integration time to 1000ms
 Acquire spectrum and display it as a 2D area scan heatmap.
 
-Partial implementation.
+TODO rewrite using tkinter for rendering
 """
 
 import pyglet
