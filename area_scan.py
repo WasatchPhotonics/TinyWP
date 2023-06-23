@@ -28,16 +28,6 @@ print("Found Wasatch Device.", type(device))
 TinyWP.init(device)
 
 # ---------------------   End Device Connection ------------------ #
-# --------------------- Begin Window Initialization -------------- #
-
-window = Tk()
-window.title("Area Scan")
-canvas = Canvas(window, width=500, height=500)
-canvas.pack()
-
-FPS = 60
-
-# ---------------------   End Window Initialization -------------- #
 # --------------------- Begin Device Parameters ------------------ #
 
 TinyWP.set_integration_time_ms(device, 16)
@@ -49,7 +39,19 @@ y = 0
 # for drawing purposes
 row_buffer = [None,] * horizontal * vertical
 
+scale_factor = 3
+
 # ---------------------   End Device Parameters ------------------ #
+# --------------------- Begin Window Initialization -------------- #
+
+window = Tk()
+window.title("Area Scan")
+canvas = Canvas(window, width=horizontal*scale_factor, height=vertical*scale_factor)
+canvas.pack()
+
+FPS = 60
+
+# ---------------------   End Window Initialization -------------- #
 # --------------------- Begin Mainloop --------------------------- #
 
 def update():
@@ -84,7 +86,8 @@ def update():
         # per row saturation adjustment
         v = int(255 * (spectrum[x]-lo)/(hi-lo))
         color = f'#{hex(v)[2:].zfill(2)}0000'
-        row_buffer[y*horizontal+x] = canvas.create_rectangle(x, y, x+1, y+1, fill=color, outline='')
+        sf = scale_factor
+        row_buffer[y*horizontal+x] = canvas.create_rectangle(sf*x, sf*y, sf*x+sf, sf*y+sf, fill=color, outline='')
 
     y += 1
     y %= vertical
