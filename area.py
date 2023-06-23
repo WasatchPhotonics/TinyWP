@@ -9,12 +9,9 @@ Partial implementation.
 import pyglet
 from pyglet.gl import *
 
-import sys
 import TinyWP
-import WPPostProc
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 
+import sys
 import time
 
 FPS = 600
@@ -35,9 +32,18 @@ vertical = TinyWP.get_active_pixels_vertical(device)
 
 y = 0
 
-# @window.event
+glEnable(GL_BLEND)
+glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA)
+
+@window.event
+def on_key_press(symbol, modifiers):
+    window.clear()
+
+@window.event
+def on_mouse_motion(x, y, dx, dy):
+    pass
+
 def on_draw(*k):
-    # window.clear()
     global y
 
     # capture full image each frame (set to 1 for single row)
@@ -52,10 +58,15 @@ def on_draw(*k):
         # use pyglet GL to draw area scan
         glBegin(GL_POINTS)
         for x in range(len(spectrum)):
-            hi = max(spectrum)
-            lo = min(spectrum)
+            #hi = max(spectrum)
+            #lo = min(spectrum)
+
+            # low exposure
+            lo = 0
+            hi = 14000
+
             v = (spectrum[x]-lo)/(hi-lo)
-            glColor4f(v, 0, 0, 255)
+            glColor4f(v, 0, 0, .5)
             glVertex2f(10+x+.5, 10+y+.5)
         glEnd()
 
