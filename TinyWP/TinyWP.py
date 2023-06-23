@@ -128,6 +128,11 @@ def get_active_pixels_vertical(device):
     return 64
 
 def get_area_scan(device, msg_bytes_per_line=1024, line_count=None):
+    """
+    get area scan using repeated invocations of get_spectrum
+    this function is based on the mistaken premise that a single
+    0xAD results in the entire area scan being written
+    """
     device.ctrl_transfer(HOST_TO_DEVICE, 0xAD, 0, 0)
 
     if line_count is None:

@@ -70,8 +70,13 @@ def update():
     # but this was unreliable when I tried it
     _, spectrum = spectrum[0], [spectrum[1]]+spectrum[1:]
 
+    # set to 1 for lossless image
+    # this is for experimenting with faster areascan
+    # if it's still slow undersampled, it means the device is taking time
+    undersample = 1
+
     # use tkinter canvas to draw area scan
-    for x in range(len(spectrum)):
+    for x in range(0, len(spectrum), undersample):
         #color(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
         #vertex(10+x, 10+y)
 
