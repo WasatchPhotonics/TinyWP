@@ -9,7 +9,7 @@ TODO rewrite using tkinter for rendering
 # --------------------- Begin Imports ---------------------------- #
 
 import TinyWP
-import WPPostProc
+from TinyWP import WPPostProc
 
 from tkinter import *
 from tkinter import ttk
@@ -31,10 +31,11 @@ TinyWP.init(device)
 # --------------------- Begin Window Initialization -------------- #
 
 window = Tk()
-frame = ttk.Frame(window, padding=10)
-frame.grid()
+window.title("Area Scan")
+canvas = Canvas(window, width=500, height=500)
+canvas.pack()
 
-start = time.time()
+FPS = 60
 
 # ---------------------   End Window Initialization -------------- #
 # --------------------- Begin Device Parameters ------------------ #
@@ -49,6 +50,14 @@ y = 0
 # --------------------- Begin Mainloop --------------------------- #
 
 def update():
+    """
+    Draw one row of pixels from area scan per frame
+
+    framerate is 60fps and there are ~64 rows
+    areascan fully updates once per second
+    """
+
+    global y
 
     # get spectrum
     spectrum = TinyWP.get_spectrum(device)
@@ -57,14 +66,25 @@ def update():
     _, spectrum = spectrum[0], [spectrum[1]]+spectrum[1:]
 
     # use tkinter canvas to draw area scan
-    for x in range(200):
-        for y in range(20):
-            pass
-            #color(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
-            #vertex(10+x, 10+y)
+    for x in range(len(spectrum)):
+        #color(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
+        #vertex(10+x, 10+y)
+
+        # create persistent graphics object for each row of areascan
+        # TODO: delete rectangles that are drawn over
+        hi = max(spectrum)
+        lo = min(spectrum)
+        # per row saturation adjustment
+        v = int(255 * (spectrum[x]-lo)/(hi-lo))
+        color = f'#{hex(v)[2:].zfill(2)}0000'
+        canvas.create_rectangle(x, y, x+1, y+1, fill=color, outline='')
 
     y += 1
     y %= vertical
+
+    window.after(1000//FPS, update)
+
+window.after(1000//FPS, update)
 
 window.mainloop()
 

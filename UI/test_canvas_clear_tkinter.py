@@ -1,5 +1,5 @@
 """
-See test_canvas_clear_tkinter.py for another realtime demo
+This is another demo of realtime rendering in tkinter canvas using a different approach
 """
 
 from tkinter import *
@@ -16,19 +16,18 @@ FPS = 60
 
 x, y = 10, 10
 
-# initialize drawing object
-r = canvas.create_rectangle(x, y, 100+x, 100+y, fill='red', outline='')
-
 def update():
+
+    # clear canvas
+    canvas.delete("all")
+
     global x, y, r
 
     x += 1
+    color = f'#{hex(x % 0xff)[2:].zfill(2)}0000'
 
-    # change coordinates over time
-    #canvas.coords(r, x, y, 100+x, 100+y)
-
-    # change color over time
-    canvas.itemconfig(r, fill=f'#{hex(x % 0xff)[2:].zfill(2)}0000') 
+    # due to clear, this is like an immediate-mode function
+    r = canvas.create_rectangle(x, y, 100+x, 100+y, fill=color, outline='')
 
     root.after(1000//FPS, update)
 
