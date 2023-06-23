@@ -22,3 +22,7 @@ test_window_PySimpleGUI.py
 
 test_window_tkinter.py
 - works
+- supports arbitrary rendering
+
+see docs: https://www.tcl.tk/man/
+https://docs.python.org/3/library/tk.html
