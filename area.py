@@ -36,6 +36,7 @@ y = 0
 # @window.event
 def on_draw(*k):
     # window.clear()
+    global y
 
     # get spectrum
     spectrum = TinyWP.get_spectrum(device)
@@ -44,15 +45,18 @@ def on_draw(*k):
 
     # use pyglet GL to draw area scan
     glBegin(GL_POINTS)
-    for x in range(200):
-        for y in range(20):
-            glColor4f(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
-            glVertex2f(10+x, 10+y)
+    for x in range(len(spectrum)):
+        hi = max(spectrum)
+        lo = min(spectrum)
+        v = int(255* (spectrum[x]-lo)/(hi-lo))
+        v = x%256
+        glColor4f(v/255., 0, 0, 255)
+        glVertex2f(10+x, 10+y)
     glEnd()
 
     y += 1
     y %= vertical
 
-pyglet.clock.schedule_interval(on_draw, 1/60.)
+pyglet.clock.schedule_interval(on_draw, 1/30.)
 pyglet.app.run()
 
