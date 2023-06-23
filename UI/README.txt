@@ -8,12 +8,13 @@ Priorities:
 Out of box support matrix
 
              Ubuntu 22   macOS 13.2.1  Windows 11
-PySide2        YES          NO
-PySide6        NO          YES
-tkinter        YES         YES
-PySimpleGUI    YES         YES
-
-*tkinter (and therefore PySimpleGUI) are pretty much guranteed to run consistently on every platform
+PySide2        YES*         NO          PARTIAL -- required conda env downgrade to 3.10
+PySide6        NO          YES          YES
+tkinter**      YES         YES          YES
+PySimpleGUI    YES         YES          YES
+ 
+*downgrade to py37 on Ubuntu had to do with Enlighten-specific implementation details
+**tkinter (and therefore PySimpleGUI) are pretty much guranteed to run consistently on every platform
 
 Synopsis - (Ubuntu only)
 
