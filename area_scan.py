@@ -42,9 +42,12 @@ FPS = 60
 
 TinyWP.set_integration_time_ms(device, 16)
 TinyWP.set_area_scan(device, 1)
+horizontal = TinyWP.get_line_length(device)
 vertical = TinyWP.get_active_pixels_vertical(device)
 
 y = 0
+# for drawing purposes
+row_buffer = [None,] * horizontal * vertical
 
 # ---------------------   End Device Parameters ------------------ #
 # --------------------- Begin Mainloop --------------------------- #
@@ -70,14 +73,18 @@ def update():
         #color(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
         #vertex(10+x, 10+y)
 
-        # create persistent graphics object for each row of areascan
         # TODO: delete rectangles that are drawn over
+        gObj = row_buffer[y*horizontal+x]
+        if gObj:
+            canvas.delete(gObj)
+
+        # create persistent graphics objects for each row of areascan
         hi = max(spectrum)
         lo = min(spectrum)
         # per row saturation adjustment
         v = int(255 * (spectrum[x]-lo)/(hi-lo))
         color = f'#{hex(v)[2:].zfill(2)}0000'
-        canvas.create_rectangle(x, y, x+1, y+1, fill=color, outline='')
+        row_buffer[y*horizontal+x] = canvas.create_rectangle(x, y, x+1, y+1, fill=color, outline='')
 
     y += 1
     y %= vertical
