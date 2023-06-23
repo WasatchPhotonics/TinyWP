@@ -1,3 +1,7 @@
+"""
+Used for comparison with TinyWP
+"""
+
 import pyglet
 
 import sys

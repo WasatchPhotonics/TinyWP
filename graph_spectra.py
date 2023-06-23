@@ -1,6 +1,8 @@
 """
 Set integration time to 1000ms
 Continuously acquire spectra and display it in a window
+
+sudo apt install libgl1-mesa-dri
 """
 
 import pyglet

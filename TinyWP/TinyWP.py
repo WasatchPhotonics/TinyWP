@@ -34,7 +34,7 @@ import usb.util
 import usb.backend.libusb0 as libusb0
 
 # This is kept from Wasatch.PY for now because of platform-specific branching
-from DeviceFinderUSB import DeviceFinderUSB
+from .DeviceFinderUSB import DeviceFinderUSB
 
 from time import sleep
 

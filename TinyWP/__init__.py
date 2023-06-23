@@ -1,0 +1,1 @@
+from .TinyWP import *
