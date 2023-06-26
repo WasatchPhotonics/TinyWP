@@ -64,34 +64,33 @@ def update():
 
     global y
 
-    for row in range(vertical):
-        # get spectrum
-        spectrum = TinyWP.get_spectrum(device)
-        # _ contains the row index reported from the device,
-        # but this was unreliable when I tried it
-        _, spectrum = spectrum[0], [spectrum[1]]+spectrum[1:]
+    # get spectrum
+    spectrum = TinyWP.get_spectrum(device)
+    # _ contains the row index reported from the device,
+    # but this was unreliable when I tried it
+    _, spectrum = spectrum[0], [spectrum[1]]+spectrum[1:]
 
-        # use tkinter canvas to draw area scan
-        for x in range(0, len(spectrum)):
-            #color(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
-            #vertex(10+x, 10+y)
+    # use tkinter canvas to draw area scan
+    for x in range(len(spectrum)):
+        #color(int(255*spectrum[x]/max(spectrum)), 0, 0, 255)
+        #vertex(10+x, 10+y)
 
-            # TODO: delete rectangles that are drawn over
-            gObj = row_buffer[y*horizontal+x]
-            if gObj:
-                canvas.delete(gObj)
+        # TODO: delete rectangles that are drawn over
+        gObj = row_buffer[y*horizontal+x]
+        if gObj:
+            canvas.delete(gObj)
 
-            # create persistent graphics objects for each row of areascan
-            hi = max(spectrum)
-            lo = min(spectrum)
-            # per row saturation adjustment
-            v = int(255 * (spectrum[x]-lo)/(hi-lo))
-            color = f'#{hex(v)[2:].zfill(2)}0000'
-            sf = scale_factor
-            row_buffer[y*horizontal+x] = canvas.create_rectangle(sf*x, sf*y, sf*x+sf, sf*y+sf, fill=color, outline='')
+        # create persistent graphics objects for each row of areascan
+        hi = max(spectrum)
+        lo = min(spectrum)
+        # per row saturation adjustment
+        v = int(255 * (spectrum[x]-lo)/(hi-lo))
+        color = f'#{hex(v)[2:].zfill(2)}0000'
+        sf = scale_factor
+        row_buffer[y*horizontal+x] = canvas.create_rectangle(sf*x, sf*y, sf*x+sf, sf*y+sf, fill=color, outline='')
 
-        y += 1
-        y %= vertical
+    y += 1
+    y %= vertical
 
     window.after(1000//FPS, update)
 
