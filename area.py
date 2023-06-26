@@ -3,7 +3,13 @@ Enable area scan mode
 Set integration time to 1000ms
 Acquire spectrum and display it as a 2D area scan heatmap.
 
-Partial implementation.
+This implementation is written using OpenGL 3.0.
+
+Only windows is supported, because that's where `pip install pyglet`
+is sufficient to cover all GL dependencies.
+
+On other platforms, it is possible to run, but additional dynamic library 
+dependencies may need to be installed.
 """
 
 import pyglet
