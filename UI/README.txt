@@ -21,7 +21,7 @@ Synopsis - (Ubuntu only)
 test_window_Pyside2.py
 - works
 - redirects to PySide6... Does not seem like a future proof solution.
-- known to push breaking changes, causes version issues since revisions need platform specific builds -- this is the problem with bindings. A non-stable API creates a real shitstorm.
+- known to push breaking changes, causes version issues since revisions need platform specific builds -- this is the problem with bindings. A non-stable API creates a real problem.
 
 test_window_Pyside6.py
 - crashes on Ubuntu due to missing backend
