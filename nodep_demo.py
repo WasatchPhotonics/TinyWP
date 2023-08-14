@@ -26,7 +26,8 @@ def get_device():
     """
     device = None
     while not device:
-        return usb.core.find(idVendor=0x24aa, idProduct=0x4000, backend=libusb0.get_backend())
+        device = usb.core.find(idVendor=0x24aa, idProduct=0x4000, backend=libusb0.get_backend())
+    return device
 
 def init(device):
     """
