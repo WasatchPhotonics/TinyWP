@@ -56,6 +56,20 @@ def _interleave_lsb_msb(raw_data):
     # (i) starts at zero (even bytes) and (j) starts at 1 (odd bytes).
     return [int(i | (j << 8)) for i, j in zip(raw_data[::2], raw_data[1::2])] # LSB-MSB
 
+def _to40bit(val):
+    """
+    Laser modulation and continuous-strobe commands take arguments in micro-
+    seconds as 40-bit values, where the least-significant 16 bits are passed
+    as wValue, the next-significant 16 as wIndex, and the most-significant
+    as a single byte of payload.  This function takes an unsigned integral
+    value (presumably microseconds) and returns a tuple of wValue, wIndex
+    and a buffer to pass as payload.
+    """
+    lsw = val & 0xffff
+    msw = (val >> 16) & 0xffff
+    buf = [ (val >> 32) & 0xff, 0 * 7 ]
+    return (lsw, msw, buf)
+
 """
 Device Mgmt
 """
@@ -67,7 +81,7 @@ def get_devices():
 
 # performs initialization steps
 def init(device):
-    device.set_configuration()
+    device.set_configuration(1)
     usb.util.claim_interface(device, 0)
 
     # TODO from ENG-001
@@ -179,3 +193,29 @@ def set_integration_time_ms(device, integration_time_ms):
 def set_area_scan(device, enable=1):
     device.ctrl_transfer(HOST_TO_DEVICE, 0xEB, enable)
 
+def set_mod_enable(device, state):
+    value = 1 if state else 0
+    device.ctrl_transfer(HOST_TO_DEVICE, 0xBD, value)
+
+def set_mod_period_microseconds(device, period_us):
+    (lsw, msw, buf) = _to40bit(period_us)
+    device.ctrl_transfer(HOST_TO_DEVICE, 0xC7, lsw, msw, buf)
+
+def set_mod_width_microseconds(device, width_us):
+    (lsw, msw, buf) = _to40bit(width_us)
+    device.ctrl_transfer(HOST_TO_DEVICE, 0xDB, lsw, msw, buf)
+
+def set_laser_power_perc(device, perc):
+    perc = float(max(0, min(100, perc)))
+
+    if perc == 100:
+        set_mod_enable(device, False)
+    else:
+        period_us = 1000
+        set_mod_period_microseconds(device, period_us)
+
+        width_us = int(round(1.0 * perc * period_us / 100.0, 0)) 
+        width_us = max(1, min(width_us, period_us))
+        set_mod_width_microseconds(device, width_us)
+
+        set_mod_enable(device, True)
