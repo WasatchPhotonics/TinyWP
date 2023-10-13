@@ -1,5 +1,6 @@
 """
 Turn the laser on and off, with user input
+(doesn't work)
 """
 
 import TinyWP
