@@ -31,7 +31,10 @@ TinyWP.init(device)
 # --------------------- Begin Device Parameters ------------------ #
 
 TinyWP.set_integration_time_ms(device, 16)
-TinyWP.set_area_scan(device, 1)
+ret = TinyWP.set_area_scan(device, 1)
+
+print("Area scan return code", ret)
+
 horizontal = TinyWP.get_line_length(device)
 vertical = TinyWP.get_active_pixels_vertical(device)
 
